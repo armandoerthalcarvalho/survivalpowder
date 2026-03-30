@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import { Structure } from './Structure.js';
 
-const POWDER_RATE = 0.4; // per second
-const CARBON_RATE = 0.25; // per second
+const POWDER_RATE = 0.2; // per second
+const CARBON_RATE = 0.1; // per second
 
 export class Miner extends Structure {
   constructor(scene, x, y, depositType) {

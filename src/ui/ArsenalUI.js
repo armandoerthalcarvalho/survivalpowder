@@ -30,7 +30,7 @@ export class ArsenalUI {
       const y = 95 + i * 28;
 
       const costStr = this.formatCost(data.ammoCost, data.ammoCostAlt);
-      const label = `${data.name} | Dmg:${data.damage} Rng:${data.range}r Ammo:${data.maxAmmo} | ${costStr}`;
+      const label = `${data.name} | Dmg:${data.damage} Rng:${data.range}r Ammo:${data.maxAmmo} | ${costStr} Cooldown:${data.cooldown / 1000}s`;
 
       const btn = scene.add.text(210, y, label, {
         fontSize: '10px', fontFamily: 'monospace', color: '#cccccc',

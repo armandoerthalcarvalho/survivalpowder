@@ -7,7 +7,7 @@ export class Guardian extends Enemy {
     super(scene, x, y, 'enemy-guardian', {
       type: 'guardian',
       hp,
-      damage: 1,
+      damage: 3,
       range: 0.5,        // was 1r
       speed: 22,         // was 30
       attackCooldown: 2000  // was 1500ms

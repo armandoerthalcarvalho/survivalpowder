@@ -5,10 +5,10 @@ export const R_UNIT = 100; // 1r in pixels
 export const WEAPON_DATA = {
   regular: {
     name: 'Regular',
-    range: 1,
-    damage: 1,
-    maxAmmo: 7,
-    ammoCost: { powder: 1 },
+    range: 1, 
+    damage: 1, 
+    maxAmmo: 7, 
+    ammoCost: { powder: 1 }, 
     cooldown: 500     // ms
   },
   double: {
@@ -22,7 +22,7 @@ export const WEAPON_DATA = {
   longgun: {
     name: 'Longgun',
     range: 2.5,
-    damage: 2.5,
+    damage: 3,
     maxAmmo: 3,
     ammoCost: { compressedPowder: 1 }, // OR 4 powder — handled in reload logic
     ammoCostAlt: { powder: 4 },
@@ -59,8 +59,8 @@ export const WEAPON_DATA = {
     range: 5,
     damage: 10,
     maxAmmo: 1,
-    ammoCost: { carbon: 2 },
-    ammoCostAlt: { distilCarbon: 2 },
+    ammoCost: { carbon: 2, diamond: 1 }, 
+    ammoCostAlt: { distilCarbon: 2, diamond: 1 },
     cooldown: 10000
   },
   sharp: {
@@ -76,8 +76,8 @@ export const WEAPON_DATA = {
     range: 0.8,
     damage: 2,
     maxAmmo: 5,
-    ammoCost: { carbon: 1 },
-    ammoCostAlt: { distilCarbon: 1 },
+    ammoCost: { carbon: 3 },
+    ammoCostAlt: { distilCarbon: 3 },
     cooldown: 100
   }
 };
