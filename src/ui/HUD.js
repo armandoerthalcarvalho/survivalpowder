@@ -152,5 +152,5 @@ export class HUD {
     }
 
     this.promptText.setVisible(false);
-  } 
+  }
 }

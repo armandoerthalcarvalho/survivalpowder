@@ -4,7 +4,7 @@ import { Enemy } from './Enemy.js';
 export class Eagle extends Enemy {
   constructor(scene, x, y) {
     const hp = Phaser.Math.Between(2, 3);
-    const dmg = Phaser.Math.Between(1, 1.5); // was 2-3
+    const dmg = Phaser.Math.Between(1, 2); // was 2-3
     super(scene, x, y, 'enemy-eagle', {
       type: 'eagle',
       hp,
