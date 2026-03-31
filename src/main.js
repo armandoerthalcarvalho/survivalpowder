@@ -4,6 +4,7 @@ import { MenuScene } from './scenes/MenuScene.js';
 import { GameScene } from './scenes/GameScene.js';
 import { GameOverScene } from './scenes/GameOverScene.js';
 import { DOC_CONTENT } from './ui/DocContent.js';
+import { audioManager } from './systems/AudioManager.js';
 
 // Remove loading text once Phaser starts
 const loadingEl = document.getElementById('loading');
@@ -42,11 +43,13 @@ try {
     isPaused = !isPaused;
     if (isPaused) {
       game.scene.pause('Game');
+      audioManager.pause();
       pauseOverlay.classList.add('visible');
       pauseBtn.textContent = '▶ Retomar';
       pauseBtn.classList.add('paused');
     } else {
       game.scene.resume('Game');
+      audioManager.resume();
       pauseOverlay.classList.remove('visible');
       pauseBtn.textContent = '⏸ Pausar';
       pauseBtn.classList.remove('paused');
@@ -103,6 +106,30 @@ try {
 
   // Expose pause helpers for GameScene auto-save
   window.__powderSurvival = { game, pauseGame, resumeGame, isPaused: () => isPaused };
+
+  // --- Audio Controls ---
+  const musicBtn = document.getElementById('music-btn');
+  const sfxBtn = document.getElementById('sfx-btn');
+
+  // Initialize audio on first user interaction
+  const initAudio = () => {
+    audioManager.init();
+    document.removeEventListener('click', initAudio);
+    document.removeEventListener('keydown', initAudio);
+  };
+  document.addEventListener('click', initAudio);
+  document.addEventListener('keydown', initAudio);
+
+  musicBtn.addEventListener('click', () => {
+    audioManager.init();
+    const on = audioManager.toggleMusic();
+    musicBtn.textContent = on ? '🎵 Música: ON' : '🎵 Música: OFF';
+  });
+  sfxBtn.addEventListener('click', () => {
+    audioManager.init();
+    const on = audioManager.toggleSfx();
+    sfxBtn.textContent = on ? '🔊 SFX: ON' : '🔇 SFX: OFF';
+  });
 
 } catch (err) {
   if (loadingEl) loadingEl.textContent = 'ERRO: ' + err.message;

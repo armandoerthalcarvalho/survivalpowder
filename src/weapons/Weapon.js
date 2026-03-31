@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { R_UNIT, DISTIL_DAMAGE_MULT } from './WeaponData.js';
+import { audioManager } from '../systems/AudioManager.js';
 
 export class Weapon {
   constructor(scene, owner, data) {
@@ -38,6 +39,8 @@ export class Weapon {
     this.currentAmmo--;
     this.lastFireTime = time;
     this.createProjectile(point);
+    const pitch = this.data.name === 'Pocket' ? 1.5 : this.data.name === 'Longgun' ? 0.6 : this.data.name === 'Flamethrower' ? 1.8 : 1;
+    audioManager.playShoot(pitch);
     return true;
   }
 

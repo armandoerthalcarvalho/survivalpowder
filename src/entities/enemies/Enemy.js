@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { audioManager } from '../../systems/AudioManager.js';
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, textureKey, config) {
@@ -27,6 +28,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   takeDamage(amount) {
     this.hp -= amount;
     if (this.hpLabel) this.hpLabel.setText(`HP ${this.hp}/${this.maxHp}`);
+    audioManager.playHit();
     // Strong red flash
     this.setTint(0xff0000);
     this.scene.time.delayedCall(150, () => {
@@ -40,6 +42,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   die() {
     if (this.hpLabel) this.hpLabel.destroy();
+    audioManager.playEnemyDeath();
     // Heal player +2 HP per kill
     const player = this.scene.player;
     if (player && player.alive) {

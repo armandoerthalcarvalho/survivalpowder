@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { audioManager } from './AudioManager.js';
 import { Terrestrial } from '../entities/enemies/Terrestrial.js';
 import { Eagle } from '../entities/enemies/Eagle.js';
 import { Guardian } from '../entities/enemies/Guardian.js';
@@ -37,6 +38,7 @@ export class WaveManager {
   }
 
   spawnWave() {
+    audioManager.playWaveStart();
     this.wave++;
     if (this.wave > WAVES_PER_STAGE) {
       this.wave = 1;
