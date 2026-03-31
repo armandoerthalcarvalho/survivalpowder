@@ -43,9 +43,43 @@
     #doc-modal-body { color: #ccc; font-size: 12px; line-height: 1.6; overflow-y: auto; flex: 1; white-space: pre-wrap; }
     #doc-modal-body h3 { color: #ffcc00; margin: 10px 0 4px; font-size: 13px; }
     #doc-modal-body .stat-table { color: #aaa; margin: 4px 0 8px; }
+    /* Fullscreen warning */
+    #fs-warning {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.93);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center; gap: 28px;
+      text-align: center; padding: 40px;
+    }
+    #fs-warning.hidden { display: none; }
+    #fs-warning h1 {
+      color: #ff4444; font-size: 48px; font-family: monospace; font-weight: bold;
+      text-shadow: 0 0 20px #ff2222;
+      animation: fspulse 1.2s ease-in-out infinite;
+    }
+    #fs-warning p { color: #cccccc; font-size: 20px; font-family: monospace; max-width: 600px; line-height: 1.5; }
+    #fs-btn {
+      background: #00aa55; color: #fff; border: 2px solid #00ff88;
+      padding: 18px 44px; font-size: 22px; font-family: monospace;
+      cursor: pointer; border-radius: 6px; font-weight: bold;
+      box-shadow: 0 0 24px #00ff8855;
+      animation: fspulse 1.2s ease-in-out infinite;
+    }
+    #fs-btn:hover { background: #00cc66; box-shadow: 0 0 40px #00ff88aa; }
+    #fs-skip { color: #555; font-size: 13px; font-family: monospace; cursor: pointer; text-decoration: underline; margin-top: -10px; }
+    #fs-skip:hover { color: #888; }
+    @keyframes fspulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
   </style>
 </head>
 <body>
+  <!-- Fullscreen warning -->
+  <div id="fs-warning">
+    <h1>&#9888; ATEN&#199;&#195;O &#9888;</h1>
+    <p>Este jogo foi feito para rodar em <strong style="color:#00ff88">tela cheia</strong>.<br>A experi&#234;ncia em janela pequena &#233; bem pior.</p>
+    <button id="fs-btn">&#128; Clique aqui para Fullscreen</button>
+    <span id="fs-skip">Continuar sem fullscreen</span>
+  </div>
+
   <div id="loading">Carregando PowderSurvival...</div>
   <div id="game-wrapper">
     <div id="game-container"></div>
@@ -68,5 +102,26 @@
     <button id="sfx-btn" title="Toggle efeitos sonoros">🔊 SFX: ON</button>
   </div>
   <script type="module" src="/src/main.js"></script>
+  <script>
+    const fsWarning = document.getElementById('fs-warning');
+    const fsBtn = document.getElementById('fs-btn');
+    const fsSkip = document.getElementById('fs-skip');
+    function isFS() {
+      return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement);
+    }
+    function goFS() {
+      const el = document.documentElement;
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.mozRequestFullScreen) el.mozRequestFullScreen();
+    }
+    function hideWarn() { fsWarning.classList.add('hidden'); }
+    fsBtn.addEventListener('click', function() { goFS(); hideWarn(); });
+    fsSkip.addEventListener('click', hideWarn);
+    document.addEventListener('fullscreenchange', function() {
+      if (!isFS()) fsWarning.classList.remove('hidden');
+    });
+    if (isFS()) hideWarn();
+  </script>
 </body>
 </html>
