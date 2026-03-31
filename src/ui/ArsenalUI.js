@@ -11,13 +11,13 @@ export class ArsenalUI {
     this.overlay = scene.add.graphics().setScrollFactor(0).setDepth(300);
 
     // Title
-    this.title = scene.add.text(200, 50, 'ARSENAL', {
-      fontSize: '20px', fontFamily: 'monospace', color: '#cc2222', fontStyle: 'bold'
+    this.title = scene.add.text(120, 30, 'ARSENAL', {
+      fontSize: '22px', fontFamily: 'monospace', color: '#cc2222', fontStyle: 'bold'
     }).setScrollFactor(0).setDepth(301).setVisible(false);
 
     // Current weapon info
-    this.currentWeaponText = scene.add.text(200, 75, '', {
-      fontSize: '11px', fontFamily: 'monospace', color: '#00ff88'
+    this.currentWeaponText = scene.add.text(120, 58, '', {
+      fontSize: '12px', fontFamily: 'monospace', color: '#00ff88'
     }).setScrollFactor(0).setDepth(301).setVisible(false);
 
     // Weapon buttons
@@ -27,14 +27,14 @@ export class ArsenalUI {
     for (let i = 0; i < weaponKeys.length; i++) {
       const key = weaponKeys[i];
       const data = WEAPON_DATA[key];
-      const y = 95 + i * 28;
+      const y = 80 + i * 30;
 
       const costStr = this.formatCost(data.ammoCost, data.ammoCostAlt);
       const label = `${data.name} | Dmg:${data.damage} Rng:${data.range}r Ammo:${data.maxAmmo} | ${costStr} Cooldown:${data.cooldown / 1000}s`;
 
-      const btn = scene.add.text(210, y, label, {
-        fontSize: '10px', fontFamily: 'monospace', color: '#cccccc',
-        backgroundColor: '#333333', padding: { x: 6, y: 2 }
+      const btn = scene.add.text(130, y, label, {
+        fontSize: '11px', fontFamily: 'monospace', color: '#cccccc',
+        backgroundColor: '#333333', padding: { x: 8, y: 3 }
       }).setScrollFactor(0).setDepth(301).setInteractive({ useHandCursor: true }).setVisible(false);
 
       btn.weaponKey = key;
@@ -45,42 +45,42 @@ export class ArsenalUI {
       this.weaponButtons.push(btn);
     }
 
-    const btnY = 95 + weaponKeys.length * 28 + 8;
+    const btnY = 80 + weaponKeys.length * 30 + 12;
 
     // Reload button
-    this.reloadBtn = scene.add.text(210, btnY, '[ RECARREGAR ARMA ]', {
-      fontSize: '12px', fontFamily: 'monospace', color: '#ffaa00',
-      backgroundColor: '#333333', padding: { x: 10, y: 4 }
+    this.reloadBtn = scene.add.text(130, btnY, '[ RECARREGAR ARMA ]', {
+      fontSize: '13px', fontFamily: 'monospace', color: '#ffaa00',
+      backgroundColor: '#333333', padding: { x: 12, y: 5 }
     }).setScrollFactor(0).setDepth(301).setInteractive({ useHandCursor: true }).setVisible(false);
     this.reloadBtn.on('pointerdown', () => this.reloadWeapon());
 
     // Deposit button
-    this.depositBtn = scene.add.text(420, btnY, '[ DEPOSITAR RECURSOS ]', {
-      fontSize: '12px', fontFamily: 'monospace', color: '#44aaff',
-      backgroundColor: '#333333', padding: { x: 10, y: 4 }
+    this.depositBtn = scene.add.text(400, btnY, '[ DEPOSITAR RECURSOS ]', {
+      fontSize: '13px', fontFamily: 'monospace', color: '#44aaff',
+      backgroundColor: '#333333', padding: { x: 12, y: 5 }
     }).setScrollFactor(0).setDepth(301).setInteractive({ useHandCursor: true }).setVisible(false);
     this.depositBtn.on('pointerdown', () => this.depositResources());
 
     // Close button
-    this.closeBtn = scene.add.text(580, 50, '[ X ]', {
-      fontSize: '14px', fontFamily: 'monospace', color: '#ff4444',
+    this.closeBtn = scene.add.text(660, 30, '[ X ]', {
+      fontSize: '16px', fontFamily: 'monospace', color: '#ff4444',
       padding: { x: 4, y: 2 }
     }).setScrollFactor(0).setDepth(301).setInteractive({ useHandCursor: true }).setVisible(false);
     this.closeBtn.on('pointerdown', () => this.hide());
 
     // Arsenal storage display
-    this.storageText = scene.add.text(210, btnY + 32, '', {
-      fontSize: '11px', fontFamily: 'monospace', color: '#888888'
+    this.storageText = scene.add.text(130, btnY + 36, '', {
+      fontSize: '12px', fontFamily: 'monospace', color: '#888888'
     }).setScrollFactor(0).setDepth(301).setVisible(false);
 
     // Player inventory display
-    this.playerResText = scene.add.text(210, btnY + 50, '', {
-      fontSize: '11px', fontFamily: 'monospace', color: '#88aa44'
+    this.playerResText = scene.add.text(130, btnY + 56, '', {
+      fontSize: '12px', fontFamily: 'monospace', color: '#88aa44'
     }).setScrollFactor(0).setDepth(301).setVisible(false);
 
     // Feedback text
-    this.feedbackText = scene.add.text(400, btnY + 72, '', {
-      fontSize: '12px', fontFamily: 'monospace', color: '#ffff00', fontStyle: 'bold'
+    this.feedbackText = scene.add.text(400, btnY + 80, '', {
+      fontSize: '13px', fontFamily: 'monospace', color: '#ffff00', fontStyle: 'bold'
     }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(301).setVisible(false);
   }
 
@@ -104,8 +104,8 @@ export class ArsenalUI {
     this.currentArsenal = arsenal;
     this.visible = true;
     this.overlay.clear();
-    this.overlay.fillStyle(0x000000, 0.75);
-    this.overlay.fillRect(190, 42, 420, 480);
+    this.overlay.fillStyle(0x000000, 0.8);
+    this.overlay.fillRect(110, 20, 580, 540);
 
     this.title.setVisible(true);
     this.currentWeaponText.setVisible(true);

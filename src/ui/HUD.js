@@ -30,7 +30,7 @@ export class HUD {
     // ===== BOTTOM: Controls help =====
     this.controlsBg = scene.add.graphics().setScrollFactor(0).setDepth(199);
     this.controlsText = scene.add.text(400, 580, 
-      'WASD=mover | Click=atirar | B=construir | E=arsenal | F=retomar build | R=girar belt | ESC=cancelar', {
+      'WASD=mover | Click=atirar | B=construir | E=arsenal | F=retomar | R=girar belt | SPACE=pausar | ESC=cancelar', {
       fontSize: '10px', fontFamily: 'monospace', color: '#666666'
     }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(200);
 
