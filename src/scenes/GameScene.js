@@ -81,6 +81,16 @@ export class GameScene extends Phaser.Scene {
       null,
       this
     );
+
+    // --- Load saved game ---
+    this.loadGame();
+
+    // --- Auto-save every 30 seconds ---
+    this._autoSaveTimer = this.time.addEvent({
+      delay: 30000,
+      callback: () => this.saveGame(),
+      loop: true
+    });
   }
 
   setupInput() {
@@ -165,10 +175,89 @@ export class GameScene extends Phaser.Scene {
 
   onPlayerDeath() {
     this.waveManager.active = false;
+    // Clear saved game on death
+    try { localStorage.removeItem('powderSurvival_save'); } catch(e) {}
     this.scene.start('GameOver', {
       stage: this.waveManager.stage,
       wave: this.waveManager.wave
     });
+  }
+
+  // === SAVE / LOAD SYSTEM ===
+
+  saveGame() {
+    try {
+      const rm = this.resourceManager;
+      const wm = this.waveManager;
+
+      // Serialize all storages
+      const storages = {};
+      for (const [id, s] of rm.storages) {
+        storages[id] = { ...s };
+      }
+
+      const save = {
+        version: 1,
+        timestamp: Date.now(),
+        player: {
+          x: this.player.x,
+          y: this.player.y,
+          hp: this.player.hp,
+          weaponKey: this.player.currentWeaponKey,
+          ammo: this.player.weapon ? this.player.weapon.currentAmmo : 0
+        },
+        wave: {
+          stage: wm.stage,
+          wave: wm.wave,
+          waveTimer: wm.waveTimer,
+          totalKills: wm.totalKills
+        },
+        storages
+      };
+
+      localStorage.setItem('powderSurvival_save', JSON.stringify(save));
+    } catch(e) {
+      console.warn('Auto-save failed:', e);
+    }
+  }
+
+  loadGame() {
+    try {
+      const raw = localStorage.getItem('powderSurvival_save');
+      if (!raw) return;
+      const save = JSON.parse(raw);
+      if (!save || save.version !== 1) return;
+
+      // Restore player
+      this.player.setPosition(save.player.x, save.player.y);
+      this.player.hp = save.player.hp;
+      if (save.player.weaponKey) {
+        this.player.equipWeapon(save.player.weaponKey);
+        this.player.weapon.currentAmmo = save.player.ammo || 0;
+      }
+
+      // Restore wave manager
+      const wm = this.waveManager;
+      wm.stage = save.wave.stage;
+      wm.wave = save.wave.wave;
+      wm.waveTimer = save.wave.waveTimer;
+      wm.totalKills = save.wave.totalKills;
+
+      // Restore storages
+      const rm = this.resourceManager;
+      for (const [id, s] of Object.entries(save.storages)) {
+        if (rm.storages.has(id)) {
+          const existing = rm.storages.get(id);
+          existing.powder = s.powder || 0;
+          existing.carbon = s.carbon || 0;
+          existing.compressedPowder = s.compressedPowder || 0;
+          existing.distilCarbon = s.distilCarbon || 0;
+          existing.diamond = s.diamond || 0;
+        }
+      }
+    } catch(e) {
+      console.warn('Load failed:', e);
+    }
   }
 
   update(time, delta) {

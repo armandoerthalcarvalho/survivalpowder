@@ -22,7 +22,29 @@ export class MenuScene extends Phaser.Scene {
       color: '#aaaaaa'
     }).setOrigin(0.5);
 
-    const startBtn = this.add.text(cx, cy - 20, '[ INICIAR ]', {
+    // Check for saved game
+    let hasSave = false;
+    try { hasSave = !!localStorage.getItem('powderSurvival_save'); } catch(e) {}
+
+    let btnY = cy - 20;
+
+    if (hasSave) {
+      const continueBtn = this.add.text(cx, btnY, '[ CONTINUAR ]', {
+        fontSize: '22px',
+        fontFamily: 'monospace',
+        color: '#00ff88',
+        backgroundColor: '#223322',
+        padding: { x: 24, y: 12 }
+      }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+      continueBtn.on('pointerover', () => continueBtn.setColor('#ffffff'));
+      continueBtn.on('pointerout', () => continueBtn.setColor('#00ff88'));
+      continueBtn.on('pointerdown', () => this.scene.start('Game'));
+
+      btnY += 50;
+    }
+
+    const startBtn = this.add.text(cx, btnY, '[ NOVO JOGO ]', {
       fontSize: '22px',
       fontFamily: 'monospace',
       color: '#ffffff',
@@ -32,7 +54,10 @@ export class MenuScene extends Phaser.Scene {
 
     startBtn.on('pointerover', () => startBtn.setColor('#00ff88'));
     startBtn.on('pointerout', () => startBtn.setColor('#ffffff'));
-    startBtn.on('pointerdown', () => this.scene.start('Game'));
+    startBtn.on('pointerdown', () => {
+      try { localStorage.removeItem('powderSurvival_save'); } catch(e) {}
+      this.scene.start('Game');
+    });
 
     // Controls help
     const controls = [
@@ -42,20 +67,23 @@ export class MenuScene extends Phaser.Scene {
       'E — Interagir com Arsenal (trocar arma, recarregar)',
       'F — Retomar construção pausada',
       'R — Girar direção do Belt (durante posicionamento)',
-      'ESC — Cancelar construção / fechar menus'
+      'ESC — Cancelar construção / fechar menus',
+      'SPACE — Pausar / Retomar jogo'
     ];
 
-    this.add.text(cx, cy + 50, 'CONTROLES:', {
+    const controlsStartY = btnY + 40;
+
+    this.add.text(cx, controlsStartY, 'CONTROLES:', {
       fontSize: '12px', fontFamily: 'monospace', color: '#ffcc00', fontStyle: 'bold'
     }).setOrigin(0.5);
 
     controls.forEach((line, i) => {
-      this.add.text(cx, cy + 70 + i * 18, line, {
+      this.add.text(cx, controlsStartY + 20 + i * 18, line, {
         fontSize: '11px', fontFamily: 'monospace', color: '#888888'
       }).setOrigin(0.5);
     });
 
-    this.add.text(cx, cy + 210, 'Minere recursos → Construa belts → Fabrique munição → Sobreviva!', {
+    this.add.text(cx, controlsStartY + 20 + controls.length * 18 + 10, 'Minere recursos → Construa belts → Fabrique munição → Sobreviva!', {
       fontSize: '10px', fontFamily: 'monospace', color: '#555555'
     }).setOrigin(0.5);
   }
