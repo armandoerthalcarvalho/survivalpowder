@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Weapon } from '../weapons/Weapon.js';
 import { WEAPON_DATA } from '../weapons/WeaponData.js';
+import { audioManager } from '../systems/AudioManager.js';
 
 const PLAYER_SPEED = 150;
 const PLAYER_MAX_HP = 10;
@@ -52,6 +53,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   takeDamage(amount) {
     if (!this.alive) return;
     this.hp -= amount;
+    audioManager.playPlayerHurt();
     // Flash red
     this.setTint(0xff0000);
     this.scene.time.delayedCall(100, () => {
@@ -61,6 +63,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hp <= 0) {
       this.hp = 0;
       this.alive = false;
+      audioManager.playDeath();
       this.die();
     }
   }

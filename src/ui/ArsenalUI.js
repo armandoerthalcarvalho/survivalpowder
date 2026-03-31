@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { WEAPON_DATA } from '../weapons/WeaponData.js';
+import { audioManager } from '../systems/AudioManager.js';
 
 export class ArsenalUI {
   constructor(scene) {
@@ -145,6 +146,7 @@ export class ArsenalUI {
 
   selectWeapon(key) {
     this.scene.player.equipWeapon(key);
+    audioManager.playUIClick();
     this.showFeedback(`Arma equipada: ${WEAPON_DATA[key].name} (0 munição)`);
     this.refreshDisplay();
   }
@@ -153,6 +155,7 @@ export class ArsenalUI {
     if (!this.currentArsenal) return;
     const loaded = this.currentArsenal.reloadWeapon(this.scene.player);
     if (loaded > 0) {
+      audioManager.playReload();
       this.showFeedback(`Recarregou +${loaded} munição!`);
     } else {
       const w = this.scene.player.weapon;

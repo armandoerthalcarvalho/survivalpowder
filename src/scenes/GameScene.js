@@ -10,6 +10,7 @@ import { Arsenal } from '../entities/structures/Arsenal.js';
 import { HUD } from '../ui/HUD.js';
 import { BuildMenu } from '../ui/BuildMenu.js';
 import { ArsenalUI } from '../ui/ArsenalUI.js';
+import { audioManager } from '../systems/AudioManager.js';
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -69,6 +70,10 @@ export class GameScene extends Phaser.Scene {
     this.hud = new HUD(this);
     this.buildMenu = new BuildMenu(this);
     this.arsenalUI = new ArsenalUI(this);
+
+    // --- Audio ---
+    audioManager.init();
+    audioManager.startMusic();
 
     // --- Input ---
     this.setupInput();
@@ -162,6 +167,7 @@ export class GameScene extends Phaser.Scene {
       if (item.resourceAmount <= 0) {
         rm.groundItems.remove(item, true, true);
       }
+      audioManager.playPickup();
       // Pickup flash
       const flash = this.add.text(player.x, player.y - 20, `+${added} ${item.resourceType}`, {
         fontSize: '10px', fontFamily: 'monospace', color: '#00ff88'

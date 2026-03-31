@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { audioManager } from '../../systems/AudioManager.js';
 
 /**
  * Base class for all buildable structures.
@@ -41,6 +42,7 @@ export class Structure extends Phaser.Physics.Arcade.Sprite {
     this.setAlpha(1);
     this.barBg.destroy();
     this.barFill.destroy();
+    audioManager.playBuildComplete();
     this.onBuilt();
   }
 
