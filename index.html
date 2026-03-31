@@ -6,15 +6,65 @@
   <title>PowderSurvival</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #111; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+    body { background: #111; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
+    #game-wrapper { position: relative; }
     #game-container { width: 800px; height: 600px; }
     #loading { position: absolute; color: #00ff88; font-family: monospace; font-size: 18px; }
     canvas { display: block; }
+    #outer-controls { display: flex; gap: 8px; margin-top: 8px; }
+    #outer-controls button {
+      background: #222; color: #ccc; border: 1px solid #444; padding: 6px 14px;
+      font-family: monospace; font-size: 12px; cursor: pointer; border-radius: 3px;
+    }
+    #outer-controls button:hover { background: #333; color: #fff; }
+    #outer-controls button.active { background: #004422; color: #00ff88; border-color: #00ff88; }
+    #pause-btn.paused { background: #442200; color: #ffaa00; border-color: #ffaa00; }
+
+    /* Pause overlay */
+    #pause-overlay {
+      display: none; position: absolute; top: 0; left: 0; width: 800px; height: 600px;
+      background: rgba(0,0,0,0.7); z-index: 1000;
+      justify-content: center; align-items: center;
+    }
+    #pause-overlay.visible { display: flex; }
+    #pause-overlay span { color: #ffaa00; font-size: 32px; font-family: monospace; font-weight: bold; }
+
+    /* Doc modal */
+    #doc-modal {
+      display: none; position: absolute; top: 0; left: 0; width: 800px; height: 600px;
+      background: rgba(0,0,0,0.88); z-index: 1100;
+      flex-direction: column; padding: 20px 30px; overflow: hidden;
+    }
+    #doc-modal.visible { display: flex; }
+    #doc-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    #doc-modal-title { color: #00ff88; font-size: 18px; font-weight: bold; }
+    #doc-modal-close { background: none; border: 1px solid #ff4444; color: #ff4444; padding: 4px 10px; cursor: pointer; font-family: monospace; font-size: 14px; border-radius: 3px; }
+    #doc-modal-close:hover { background: #441111; }
+    #doc-modal-body { color: #ccc; font-size: 12px; line-height: 1.6; overflow-y: auto; flex: 1; white-space: pre-wrap; }
+    #doc-modal-body h3 { color: #ffcc00; margin: 10px 0 4px; font-size: 13px; }
+    #doc-modal-body .stat-table { color: #aaa; margin: 4px 0 8px; }
   </style>
-  <script type="module" crossorigin src="/survivalpowder/assets/index-DIgKQxLe.js"></script>
+  <script type="module" crossorigin src="/survivalpowder/assets/index-dUYTzwTB.js"></script>
 </head>
 <body>
   <div id="loading">Carregando PowderSurvival...</div>
-  <div id="game-container"></div>
+  <div id="game-wrapper">
+    <div id="game-container"></div>
+    <div id="pause-overlay"><span>⏸ PAUSADO</span></div>
+    <div id="doc-modal">
+      <div id="doc-modal-header">
+        <span id="doc-modal-title"></span>
+        <button id="doc-modal-close">[ X ] Fechar</button>
+      </div>
+      <div id="doc-modal-body"></div>
+    </div>
+  </div>
+  <div id="outer-controls">
+    <button id="pause-btn" title="SPACE para pausar/retomar">⏸ Pausar</button>
+    <button id="doc-rules-btn">📖 Regras e UX</button>
+    <button id="doc-stats-btn">📊 Stats Completo</button>
+    <button id="doc-tips-btn">💡 Dicas</button>
+    <button id="doc-related-btn">🔗 Relacionados</button>
+  </div>
 </body>
 </html>
